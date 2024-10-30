@@ -1,0 +1,36 @@
+DROP DATABASE IF EXISTS dtd200;
+CREATE DATABASE dtd200;
+
+USE dtd200;
+
+CREATE TABLE player (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(16) NOT NULL UNIQUE,
+    password VARCHAR(16) NOT NULL
+);
+
+CREATE TABLE defense (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(32) NOT NULL UNIQUE,
+    description TEXT NOT NULL,
+    price INT UNSIGNED NOT NULL,
+    action INT UNSIGNED NOT NULL
+);
+
+CREATE TABLE player_defense (
+	player_id INT REFERENCES player(id),
+    defense_id INT REFERENCES defense(id),
+    PRIMARY KEY (player_id, defense_id)
+);
+
+INSERT INTO player (username, password) VALUES
+("tilin", "tilin123"),
+("romancito", "pagani777");
+
+INSERT INTO defense (name, description, price, action) VALUES
+("María", "Genera dinero con el pasar del tiempo.", 50, 1),
+("Hondazo", "Tira hondazos con mucha fuerza.", 100, 2);
+
+INSERT INTO player_defense (player_id, defense_id) VALUES
+(1, 1), (1, 2),
+(2, 1), (2, 2);
