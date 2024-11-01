@@ -1,0 +1,63 @@
+:root {
+	font-size: 18px;
+	--gift-size: 80px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: sans-serif;
+	background-color: #18181c;
+	overflow: hidden;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.not-birthday-message {
+	text-transform: uppercase;
+	color: #ffa500;
+}
+
+.gift {
+	cursor: pointer;
+	position: relative;
+	animation-name: gift-animation;
+	animation-duration: 0.6s;
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+}
+
+.open {
+	width: 60vw;
+	height: 60vh;
+	border: 9.0625rem solid #fff;
+	border-radius: 0.25rem;
+}
+
+@keyframes gift-animation {
+	from {
+		top: -10px;
+		width: var(--gift-size);
+		height: calc(var(--gift-size)*1.2);
+	}
+
+	to {
+		top: 50px;
+		width: calc(var(--gift-size)*1.4);
+		height: var(--gift-size);
+	}
+}

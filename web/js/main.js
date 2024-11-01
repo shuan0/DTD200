@@ -1,12 +1,33 @@
-(function(win, doc) {
-    'use strict';
+function main() {
+	fetch('../options.json')
+		.then(res => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.json();
+		})
+		.then(data => {
+			runGame(data);
+		})
+		.catch(error => {
+			alert('¡Error al cargar los datos del juego!');
+			console.error('Unable to fetch data:', error)
+		});
 
-    const renderer = doc.querySelector('[data-screen]').getContext('2d');
+	// Testeo de la API del backend.
+	fetch('http://localhost:3000/pagani/')
+		.then(res => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.text();
+		})
+		.then(data => {
+			console.log(data);
+		})
+		.catch(error => {
+			console.error('Unable to fetch data:', error)
+		});
+}
 
-    (function loop() {
-        renderer.clearRect(0, 0, renderer.canvas.width, renderer.canvas.height);
-        renderer.fillStyle = '#c80000';
-        renderer.fillRect(0, 0, 120, 120);
-        window.requestAnimationFrame(loop);
-    })();
-})(window, document);
+window.addEventListener('load', main);
