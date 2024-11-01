@@ -110,7 +110,29 @@ function runGame(options) {
             width: 32,
             height: 32,
 
+            '*': () => [
+                'player',
+                sprite('player'),
+                pos(20, 0),
+                rotate(0),
+                scale(1),
+                area(),
+                body(),
+                big(),
+                {
+                    movement(dir, force) {
+                        this.angle += (ROTATION_SPEED*dir)*dt()*60;
+                        this.move(MOVE_SPEED*dir, 0);
+                        if (this.isGrounded() && this.isBig()) {
+                            shake(force);
+                        }
+                    }
+                },
+                origin('center'),
+            ],
+
             '=': () => [
+                'wood',
                 sprite('wood'),
                 area(),
                 solid(),
@@ -118,6 +140,7 @@ function runGame(options) {
             ],
 
             '?': () => [
+                'question',
                 sprite('question'),
                 area(),
                 solid(),
@@ -126,6 +149,7 @@ function runGame(options) {
             ],
 
             '#': () => [
+                'block',
                 sprite('block'),
                 area(),
                 solid(),
@@ -133,25 +157,26 @@ function runGame(options) {
             ],
 
             '$': () => [
+                'coin',
                 sprite('coin'),
                 scale(0.9),
                 area(),
-                origin('center'),
-                'coin'
+                origin('center')
             ],
 
             '%': () => [
+                'mushroom',
                 sprite('mushroom'),
                 rotate(0),
                 scale(0.9),
                 area(),
                 body(),
                 patrol(100, 0, randi(0, 2) ? 1 : -1),
-                origin('center'),
-                'mushroom'
+                origin('center')
             ],
 
             '!': () => [
+                'enemy',
                 sprite('enemy'),
                 rotate(0),
                 scale(1),
@@ -159,28 +184,27 @@ function runGame(options) {
                 body(),
                 big(false),
                 patrol(80, 4),
-                origin('center'),
-                'enemy'
+                origin('center')
             ],
 
             '¡': () => [
+                'enemy',
                 sprite('enemy'),
                 scale(1),
                 area(),
                 body(),
                 big(false),
-                origin('center'),
-                'enemy'
+                origin('center')
             ],
 
             '@': () => [
+                'portal',
                 sprite('portal'),
                 pos(0, -16),
                 scale(1.2),
                 area(),
                 solid(),
-                origin('center'),
-                'portal'
+                origin('center')
             ]
         };
 
@@ -194,25 +218,7 @@ function runGame(options) {
 
         let tutorial = !actualLevel;
 
-        const player = add([
-            sprite('player'),
-            pos(20, 0),
-            rotate(0),
-            scale(1),
-            area(),
-            body(),
-            big(),
-            {
-                movement(dir, force) {
-                    this.angle += (ROTATION_SPEED*dir)*dt()*60;
-                    this.move(MOVE_SPEED*dir, 0);
-                    if (this.isGrounded() && this.isBig()) {
-                        shake(force);
-                    }
-                }
-            },
-            origin('center')
-        ]);
+        const player = get('player')[0];
 
         let rCoins = 0; // Cantidad de monedas que lleva recolectadas el jugador en el nivel.
         let tCoins = get('coin').length; // Número de monedas que hay en el nivel.
