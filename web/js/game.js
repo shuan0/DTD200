@@ -189,7 +189,7 @@ function runGame(options) {
         const ROTATION_SPEED = options.PLAYER_ROTATION_SPEED;
         const FALL_DEATH = options.PLAYER_FALL_DEATH;
 
-        gravity(3200);
+        gravity(options.GRAVITY_FORCE);
         const level = addLevel(levels[actualLevel], levelConfig);
 
         let tutorial = !actualLevel;
@@ -214,18 +214,19 @@ function runGame(options) {
             origin('center')
         ]);
 
-        let rCoins = 0;
+        let rCoins = 0; // Cantidad de monedas que lleva recolectadas el jugador en el nivel.
+        let tCoins = get('coin').length; // Número de monedas que hay en el nivel.
         const coinsLabel = add([
             text(''),
-            pos(20, 60),
-            scale(3),
+            pos(20, 40),
+            scale(2),
             fixed()
         ]);
 
         add([
             text(tutorial ? 'Tutorial' : `Nivel ${actualLevel}`),
-            pos(20, 20),
-            scale(3),
+            pos(20, 15),
+            scale(2),
             fixed()
         ]);
 
@@ -243,7 +244,7 @@ function runGame(options) {
                 origin('center')
             ]);
             add([
-                text('Puedes recolectar monedas\n\nLas cuales no sirven para nada\nmas que para hacerte sentir bien :D'),
+                text('Puedes recolectar monedas\n\nEstas son necesarias para completar el nivel\nSin ellas no puedes pasar por el portal de salida!'),
                 pos(2600, 80),
                 scale(2),
                 origin('center')
@@ -274,10 +275,7 @@ function runGame(options) {
             ]);
         }
 
-        if (actualLevel === 1) {
-            coins = 0;
-        }
-
+        // Background
         onUpdate(() => {
             drawSprite({
                 sprite: 'backdrop',
@@ -294,16 +292,14 @@ function runGame(options) {
         });
 
         coinsLabel.onUpdate(() => {
-            coinsLabel.text = `Monedas: ${coins}`;
+            coinsLabel.text = `Monedas: ${coins} | ${rCoins}/${tCoins}`;
         });
 
-        let cx = 380;
         player.onUpdate(() => {
-            if (player.pos.x > 380 && player.pos.x < level.width()-410) {
-                cx = player.pos.x;
-            }
-
-            camPos(cx, level.height()-levelConfig.height*6.7);
+            camPos(
+                Common.clamp(player.pos.x, 380, level.width()-410),
+                Common.clamp(player.pos.y, -Infinity, level.height()-levelConfig.height*6.7)
+            );
             if (player.pos.y >= FALL_DEATH) {
                 go('lose', rCoins);
             }
@@ -353,7 +349,7 @@ function runGame(options) {
         });
 
         player.onCollide('portal', (p, c) => {
-            if (c.isLeft() || c.isRight()) {
+            if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
                 if (actualLevel+1 < levels.length) {
                     ++actualLevel;
                     go('game');
