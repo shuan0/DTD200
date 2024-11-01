@@ -1,2 +1,2 @@
 # DTD200
-Juego del estilo **Tower Defense**.
+Juego de plataformas.
