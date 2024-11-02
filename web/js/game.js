@@ -9,22 +9,39 @@ function runGame(options) {
         background: [0, 0, 0]
     });
 
-    loadRoot('https://i.imgur.com/');
-    loadSprite('wood', 'RsAKI07.png');
-    loadSprite('question', 'uAbD6iL.png');
-    loadSprite('player', 'EYps4pS.png');
-    loadSprite('player-2', '3mhLWcR.png');
-    loadSprite('mushroom', 'Zyl3I4v.png');
-    loadSprite('coin', 'UXPquaa.png');
-    loadSprite('block', '5G7qHgf.png');
-    loadSprite('enemy', 'DzukTzp.png');
-    loadSprite('portal', 'yYanARQ.png');
-    loadSprite('boss', '5NBWzQ5.png');
-    loadSprite('burger', 'YGOc1VY.png');
-    loadSprite('taco', '33vvPJF.png');
-    loadSprite('hammer', 'ZAyuCdS.png');
-    loadSprite('hp', 'VYlLR15.png', {sliceX: 4});
-    loadSprite('backdrop', 'iQ1EGUD.png');
+    loadRoot('./sprites/');
+    loadSprite('wood', 'wood.png');
+    loadSprite('question', 'question.png');
+    loadSprite('player', 'player.png');
+    loadSprite('player-2', 'player-2.png');
+    loadSprite('mushroom', 'mushroom.png');
+    loadSprite('coin', 'coin.png');
+    loadSprite('block', 'block.png');
+    loadSprite('enemy', 'enemy.png');
+    loadSprite('portal', 'portal.png');
+    loadSprite('boss', 'boss.png');
+    loadSprite('burger', 'burger.png');
+    loadSprite('taco', 'taco.png');
+    loadSprite('hammer', 'hammer.png');
+    loadSprite('hp', 'hp.png', {sliceX: 4});
+    loadSprite('backdrop', 'backdrop.png');
+
+    // loadRoot('https://i.imgur.com/');
+    // loadSprite('wood', 'RsAKI07.png');
+    // loadSprite('question', 'uAbD6iL.png');
+    // loadSprite('player', 'EYps4pS.png');
+    // loadSprite('player-2', '3mhLWcR.png');
+    // loadSprite('mushroom', 'Zyl3I4v.png');
+    // loadSprite('coin', 'UXPquaa.png');
+    // loadSprite('block', '5G7qHgf.png');
+    // loadSprite('enemy', 'DzukTzp.png');
+    // loadSprite('portal', 'yYanARQ.png');
+    // loadSprite('boss', '5NBWzQ5.png');
+    // loadSprite('burger', 'YGOc1VY.png');
+    // loadSprite('taco', '33vvPJF.png');
+    // loadSprite('hammer', 'ZAyuCdS.png');
+    // loadSprite('hp', 'VYlLR15.png', {sliceX: 4});
+    // loadSprite('backdrop', 'iQ1EGUD.png');
 
     let actualLevel = 0;
     let coins = 0;
@@ -365,15 +382,15 @@ function runGame(options) {
             }
         });
 
-        onKeyDown(['a', 'left'], () => {
+        onKeyDown('left', () => {
             player.movement(-1, 2);
         });
 
-        onKeyDown(['d', 'right'], () => {
+        onKeyDown('right', () => {
             player.movement(1, 2);
         });
 
-        onKeyPress(['space', 'w', 'up'], () => {
+        onKeyPress('up', () => {
             if (player.isGrounded()) {
                 player.jump(JUMP_FORCE);
             }
@@ -742,17 +759,17 @@ function runGame(options) {
             h.angle += HAMMER_ROTATION_SPEED;
         });
 
-        onKeyDown(['a', 'left'], () => {
+        onKeyDown('left', () => {
             player.flipX(true);
             player.move(-PLAYER_SPEED, 0);
         });
 
-        onKeyDown(['d', 'right'], () => {
+        onKeyDown('right', () => {
             player.flipX(false);
             player.move(PLAYER_SPEED, 0);
         });
 
-        onKeyPress(['space', 'w', 'up'], () => {
+        onKeyPress('up', () => {
             if (!player.isDead()) {
                 spawnHammer(player.pos);
             }
@@ -797,6 +814,7 @@ function runGame(options) {
                 ++frame;
                 if (frame >= frames.length) {
                     alert('¡Volverás al inicio del juego!');
+                    actualLevel = 0;
                     go('game');
                 } else {
                     label.text = frames[frame].toUpperCase();
