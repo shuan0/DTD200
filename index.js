@@ -1,12 +1,9 @@
 import express from 'express';
-import cors from 'cors';
+import { corsMiddleware } from './cors.js'
 
 const app = express();
-app.use(cors());
-
-app.get('/', (req, res) => {
-    res.send('<h1>Román pajero</h1>');
-});
+app.disable('x-powered-by'); // Chau marca de agua.
+app.use(corsMiddleware());
 
 app.get('/pagani', (req, res) => {
     res.send('Pagani gil');
@@ -14,5 +11,5 @@ app.get('/pagani', (req, res) => {
 
 const PORT = process.argv[2] ?? 8000;
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT} (http://localhost:${PORT})`);
+    console.log(`Server listening on port ${PORT}`);
 });
