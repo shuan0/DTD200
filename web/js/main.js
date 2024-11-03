@@ -7,7 +7,7 @@ function main() {
 			return res.json();
 		})
 		.then(data => {
-			runGame(data);
+			initGame(data);
 		})
 		.catch(error => {
 			alert('¡Error al cargar los datos del juego!');

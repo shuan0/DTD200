@@ -1,4 +1,4 @@
-function runGame(options) {
+function initGame(options) {
     kaboom({
         root: document.querySelector('[data-screen-container]'),
         canvas: document.querySelector('[data-screen]'),
@@ -43,10 +43,72 @@ function runGame(options) {
     // loadSprite('hp', 'VYlLR15.png', {sliceX: 4});
     // loadSprite('backdrop', 'iQ1EGUD.png');
 
+    createScenes(options);
+    go('main-menu');
+}
+
+function createScenes(options) {
     let actualLevel = 0;
     let coins = 0;
 
-    scene('game', () => {
+    scene('main-menu', () => {
+        add([
+            'button',
+            'playButton',
+            pos(center()),
+            rect(),
+            text('JUGAR', {size: 18}),
+            color(255, 255, 255),
+            area(),
+            origin('center')
+        ]).onClick(() => {
+            go('level-selection');
+        });
+    });
+
+    scene('level-selection', () => {
+        let p = width()/2;
+
+        for (let i = 0; i < levels.length; ++i) {
+            let unlocked = i <= actualLevel;
+            const button = add([
+                'button',
+                pos((i*32)+p, 48),
+                rect(),
+                text(i.toString(), {size: 16}),
+                unlocked ? color(0, 255, 0) : color(100, 100, 100),
+                area(),
+                {
+                    unlocked: unlocked,
+                    selection: i
+                }
+            ]);
+
+            if (unlocked) {
+                button.onClick(() => {
+                    go('game', button.selection);
+                });
+            }
+        }
+
+        let bossUnlocked = actualLevel === levels.length;
+        const bossButton = add([
+            'button',
+            pos(p, 96),
+            rect(),
+            text('JEFE', {size: 16}),
+            bossUnlocked ? color(255, 0, 0) : color(100, 100, 100),
+            area()
+        ]);
+
+        if (bossUnlocked) {
+            bossButton.onClick(() => {
+                go('final-intro');
+            });
+        }
+    });
+
+    scene('game', (levelToPlay) => {
         function patrol(speed, rSpeed, dir = 1) {
             return {
                 id: 'patrol',
@@ -231,9 +293,9 @@ function runGame(options) {
         const FALL_DEATH = options.PLAYER_FALL_DEATH;
 
         gravity(options.GRAVITY_FORCE);
-        const level = addLevel(levels[actualLevel], levelConfig);
+        const level = addLevel(levels[levelToPlay], levelConfig);
 
-        let tutorial = !actualLevel;
+        let tutorial = !levelToPlay;
 
         const player = get('player')[0];
 
@@ -247,7 +309,7 @@ function runGame(options) {
         ]);
 
         add([
-            text(tutorial ? 'Tutorial' : `Nivel ${actualLevel}`),
+            text(tutorial ? 'Tutorial' : `Nivel ${levelToPlay}`),
             pos(20, 15),
             scale(2),
             fixed()
@@ -324,7 +386,7 @@ function runGame(options) {
                 Common.clamp(player.pos.y, -Infinity, level.height()-levelConfig.height*6.7)
             );
             if (player.pos.y >= FALL_DEATH) {
-                go('lose', rCoins);
+                go('lose', levelToPlay, rCoins);
             }
         });
 
@@ -362,7 +424,7 @@ function runGame(options) {
                 addKaboom(e.pos);
                 destroy(e);
             } else if (!c.isBottom()) {
-                go('lose', rCoins);
+                go('lose', levelToPlay, rCoins);
             }
         });
 
@@ -373,12 +435,10 @@ function runGame(options) {
 
         player.onCollide('portal', (p, c) => {
             if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
-                if (actualLevel+1 < levels.length) {
+                if (levelToPlay === actualLevel) {
                     ++actualLevel;
-                    go('game');
-                } else {
-                    go('final-intro');
                 }
+                go('level-selection');
             }
         });
 
@@ -399,7 +459,7 @@ function runGame(options) {
 
     scene('final-intro', () => {
         let frame = 0;
-        const frames = ['Antes de terminar', 'Deberas derrotar a...', 'Evil Matu'];
+        const frames = ['Antes de terminar', 'Deberas derrotar a...', 'El Jefe Final'];
 
         const label = add([
             text(frames[frame].toUpperCase(), {
@@ -778,7 +838,7 @@ function runGame(options) {
         spawnFood();
     });
 
-    scene('lose', (rCoins = 0) => {
+    scene('lose', (levelToPlay, rCoins = 0) => {
         coins -= rCoins;
         add([
             text('Perdiste!'),
@@ -787,7 +847,7 @@ function runGame(options) {
             origin('center')
         ]);
         onKeyPress(() => {
-            go('game');
+            go('game', levelToPlay);
         });
     });
 
@@ -813,15 +873,11 @@ function runGame(options) {
             onKeyPress(() => {
                 ++frame;
                 if (frame >= frames.length) {
-                    alert('¡Volverás al inicio del juego!');
-                    actualLevel = 0;
-                    go('game');
+                    go('main-menu');
                 } else {
                     label.text = frames[frame].toUpperCase();
                 }
             });
         });
     });
-
-    go('game');
 }
