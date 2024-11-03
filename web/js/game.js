@@ -78,10 +78,7 @@ function createScenes(options) {
                 text(i.toString(), {size: 16}),
                 unlocked ? color(0, 255, 0) : color(100, 100, 100),
                 area(),
-                {
-                    unlocked: unlocked,
-                    selection: i
-                }
+                {selection: i}
             ]);
             if (unlocked) {
                 button.onClick(() => {
