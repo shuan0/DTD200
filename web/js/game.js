@@ -83,7 +83,6 @@ function createScenes(options) {
                     selection: i
                 }
             ]);
-
             if (unlocked) {
                 button.onClick(() => {
                     go('game', button.selection);
@@ -100,7 +99,6 @@ function createScenes(options) {
             bossUnlocked ? color(255, 0, 0) : color(100, 100, 100),
             area()
         ]);
-
         if (bossUnlocked) {
             bossButton.onClick(() => {
                 go('final-intro');
