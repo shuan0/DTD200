@@ -67,14 +67,22 @@ function createScenes(options) {
     });
 
     scene('level-selection', () => {
-        let px = width()/3;
+        let sep = 48;
+        let wrap = 5;
+        let pxi = width()/3;
+        let px = pxi-sep;
         let py = height()/3;
 
         for (let i = 0; i < levels.length; ++i) {
+            if (!(i%wrap)) {
+                px = pxi-sep;
+                py += sep;
+            }
+            px += sep;
             let unlocked = i <= actualLevel;
             const button = add([
                 'button',
-                pos((i*48)+px, py),
+                pos(px, py),
                 rect(),
                 text(i.toString(), {size: 24}),
                 unlocked ? color(0, 255, 0) : color(100, 100, 100),
@@ -91,7 +99,7 @@ function createScenes(options) {
         let bossUnlocked = actualLevel === levels.length;
         const bossButton = add([
             'button',
-            pos(px, py+48),
+            pos(pxi, py+sep),
             rect(),
             text('JEFE', {size: 24}),
             bossUnlocked ? color(255, 0, 0) : color(100, 100, 100),
