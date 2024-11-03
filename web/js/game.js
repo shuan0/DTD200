@@ -104,7 +104,7 @@ function createScenes(options) {
         }
     });
 
-    scene('game', (levelToPlay) => {
+    scene('game', levelToPlay => {
         function patrol(speed, rSpeed, dir = 1) {
             return {
                 id: 'patrol',
@@ -234,6 +234,7 @@ function createScenes(options) {
             '$': () => [
                 'coin',
                 sprite('coin'),
+                levelToPlay === actualLevel ? color(255, 255, 255) : color(100, 100, 100),
                 scale(0.9),
                 area(),
                 origin('center')
@@ -412,7 +413,6 @@ function createScenes(options) {
         player.onCollide('coin', c => {
             destroy(c);
             ++rCoins;
-            ++coins;
         });
 
         player.onCollide('enemy', (e, c) => {
@@ -432,6 +432,7 @@ function createScenes(options) {
         player.onCollide('portal', (p, c) => {
             if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
                 if (levelToPlay === actualLevel) {
+                    coins += rCoins;
                     ++actualLevel;
                 }
                 go('level-selection');
@@ -834,8 +835,7 @@ function createScenes(options) {
         spawnFood();
     });
 
-    scene('lose', (levelToPlay, rCoins = 0) => {
-        coins -= rCoins;
+    scene('lose', levelToPlay => {
         add([
             text('Perdiste!'),
             pos(center()),
