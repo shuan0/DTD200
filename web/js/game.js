@@ -109,14 +109,14 @@ function createScenes(options) {
                     angle: wave(-9, 9, time()*3+idx)
                 })
             }),
-            pos(p.x, p.y-24),
+            pos(p.x, p.y-58),
             origin('center')
         ]);
 
         add([
             'button',
             'playButton',
-            pos(p.x, p.y+32),
+            pos(p.x, p.y),
             rect(),
             text('JUGAR', {size: 18}),
             color(255, 255, 255),
@@ -129,7 +129,7 @@ function createScenes(options) {
         add([
             'button',
             'accountButton',
-            pos(p.x, p.y+64),
+            pos(p.x, p.y+32),
             rect(),
             text('MI CUENTA', {size: 18}),
             color(255, 255, 255),
