@@ -463,7 +463,7 @@ function createScenes(options) {
                 Common.clamp(player.pos.y, -Infinity, level.height()-levelConfig.height*6.7)
             );
             if (player.pos.y >= FALL_DEATH) {
-                go('lose', levelToPlay, rCoins);
+                go('lose', levelToPlay);
             }
         });
 
@@ -500,7 +500,7 @@ function createScenes(options) {
                 addKaboom(e.pos);
                 destroy(e);
             } else if (!c.isBottom()) {
-                go('lose', levelToPlay, rCoins);
+                go('lose', levelToPlay);
             }
         });
 
