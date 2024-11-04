@@ -97,10 +97,26 @@ function createScenes(options) {
             z(-999)
         ]);
 
+        const p = center();
+
+        add([
+            text('JUEGAZO', {
+                size: 32,
+                transform: (idx, ch) => ({
+                    color: hsl2rgb((time()*0.2+idx*0.1)%1, 0.7, 0.8),
+                    pos: vec2(0, wave(-4, 4, time()*4+idx*0.5)),
+                    scale: wave(1, 1.2, time()*3+idx),
+                    angle: wave(-9, 9, time()*3+idx)
+                })
+            }),
+            pos(p.x, p.y-24),
+            origin('center')
+        ]);
+
         add([
             'button',
             'playButton',
-            pos(center()),
+            pos(p.x, p.y+32),
             rect(),
             text('JUGAR', {size: 18}),
             color(255, 255, 255),
@@ -109,6 +125,17 @@ function createScenes(options) {
         ]).onClick(() => {
             go('level-selection');
         });
+
+        add([
+            'button',
+            'accountButton',
+            pos(p.x, p.y+64),
+            rect(),
+            text('MI CUENTA', {size: 18}),
+            color(255, 255, 255),
+            area(),
+            origin('center')
+        ]);
     });
 
     scene('level-selection', () => {
@@ -561,7 +588,6 @@ function createScenes(options) {
             scale(3),
             origin('center')
         ]);
-
 
         onKeyPress(() => {
             ++frame;
