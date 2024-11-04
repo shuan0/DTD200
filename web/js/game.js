@@ -59,7 +59,8 @@ function loadUI() {
         text('Volver', {size: 18}),
         color(0, 255, 0),
         area(),
-        fixed()
+        fixed(),
+        z(999),
     ]).onClick(() => {
         go('main-menu');
     });
@@ -74,6 +75,7 @@ function loadUI() {
             }
         }),
         fixed(),
+        z(999),
         origin('topright')
     ]);
     coinsIndicator.onUpdate(() => {
@@ -83,6 +85,18 @@ function loadUI() {
 
 function createScenes(options) {
     scene('main-menu', () => {
+        // Background.
+        add([
+            pos(0, 0),
+            sprite('backdrop', {
+                width: width(),
+                height: height()
+            }),
+            color(75, 75, 75),
+            fixed(),
+            z(-999)
+        ]);
+
         add([
             'button',
             'playButton',
@@ -100,11 +114,29 @@ function createScenes(options) {
     scene('level-selection', () => {
         loadUI();
 
+        // Background.
+        add([
+            pos(0, 0),
+            sprite('backdrop', {
+                width: width(),
+                height: height()
+            }),
+            color(75, 75, 75),
+            fixed(),
+            z(-999)
+        ]);
+
+        // Options for level selection grid.
         let sep = 48;
         let wrap = 5;
         let pxi = width()/3;
         let px = pxi-sep;
         let py = height()/3;
+
+        add([
+            pos(pxi, py),
+            text('Niveles', {size: 28})
+        ]);
 
         for (let i = 0; i < levels.length; ++i) {
             if (!(i%wrap)) {
@@ -335,6 +367,17 @@ function createScenes(options) {
         gravity(options.GRAVITY_FORCE);
         const level = addLevel(levels[levelToPlay], levelConfig);
 
+        // Background
+        add([
+            pos(0, 0),
+            sprite('backdrop', {
+                width: width(),
+                height: height()
+            }),
+            fixed(),
+            z(-999)
+        ]);
+
         let tutorial = !levelToPlay;
 
         const player = get('player')[0];
@@ -404,17 +447,6 @@ function createScenes(options) {
                 origin('center')
             ]);
         }
-
-        // Background
-        onUpdate(() => {
-            drawSprite({
-                sprite: 'backdrop',
-                pos: vec2(0, 0),
-                width: width(),
-                height: height(),
-                fixed: true
-            });
-        });
 
         onCollide('enemy', 'mushroom', (e, m) => {
             destroy(m);
@@ -506,6 +538,16 @@ function createScenes(options) {
         let frame = 0;
         const frames = ['Antes de terminar', 'Deberas derrotar a...', 'El Jefe Final'];
 
+        add([
+            pos(width()-156, height()-32),
+            rect(),
+            text('Omitir >>>', {size: 18}),
+            color(0, 255, 0),
+            area()
+        ]).onClick(() => {
+            go('final');
+        });
+
         const label = add([
             text(frames[frame].toUpperCase(), {
                 transform: (idx, ch) => ({
@@ -519,6 +561,7 @@ function createScenes(options) {
             scale(3),
             origin('center')
         ]);
+
 
         onKeyPress(() => {
             ++frame;
@@ -549,9 +592,7 @@ function createScenes(options) {
     });
 
     scene('final', () => {
-        loadUI();
-
-        const PLAYER_SPEED = options.PLAYER_MOVE_SPEED/2;
+        const PLAYER_SPEED = options.PLAYER_MOVE_SPEED;
         const HAMMER_SPEED = options.HAMMER_SPEED;
         const HAMMER_ROTATION_SPEED = options.HAMMER_ROTATION_SPEED;
         const HAMMER_DAMAGE = options.HAMMER_DAMAGE;
