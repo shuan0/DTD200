@@ -1,3 +1,8 @@
+const controller = {
+    actualLevel: 0,
+    coins: 0
+};
+
 function initGame(options) {
     kaboom({
         root: document.querySelector('[data-screen-container]'),
@@ -47,10 +52,36 @@ function initGame(options) {
     go('main-menu');
 }
 
-function createScenes(options) {
-    let actualLevel = 0;
-    let coins = 0;
+function loadUI() {
+    add([
+        pos(width()-96, 16),
+        rect(),
+        text('Volver', {size: 18}),
+        color(0, 255, 0),
+        area(),
+        fixed()
+    ]).onClick(() => {
+        go('main-menu');
+    });
 
+    const coinsIndicator = add([
+        pos(width()-12, 48),
+        sprite('coin', {width: 24}),
+        text('', {
+            size: 18,
+            transform: {
+                pos: vec2(-28, 4)
+            }
+        }),
+        fixed(),
+        origin('topright')
+    ]);
+    coinsIndicator.onUpdate(() => {
+        coinsIndicator.text = controller.coins.toString();
+    });
+}
+
+function createScenes(options) {
     scene('main-menu', () => {
         add([
             'button',
@@ -67,6 +98,8 @@ function createScenes(options) {
     });
 
     scene('level-selection', () => {
+        loadUI();
+
         let sep = 48;
         let wrap = 5;
         let pxi = width()/3;
@@ -79,7 +112,7 @@ function createScenes(options) {
                 py += sep;
             }
             px += sep;
-            let unlocked = i <= actualLevel;
+            let unlocked = i <= controller.actualLevel;
             const button = add([
                 'button',
                 pos(px, py),
@@ -96,7 +129,7 @@ function createScenes(options) {
             }
         }
 
-        let bossUnlocked = actualLevel === levels.length;
+        let bossUnlocked = controller.actualLevel === levels.length;
         const bossButton = add([
             'button',
             pos(pxi, py+sep),
@@ -113,6 +146,8 @@ function createScenes(options) {
     });
 
     scene('game', levelToPlay => {
+        loadUI();
+
         function patrol(speed, rSpeed, dir = 1) {
             return {
                 id: 'patrol',
@@ -242,7 +277,7 @@ function createScenes(options) {
             '$': () => [
                 'coin',
                 sprite('coin'),
-                levelToPlay === actualLevel ? color(255, 255, 255) : color(100, 100, 100),
+                levelToPlay === controller.actualLevel ? color(255, 255, 255) : color(100, 100, 100),
                 scale(0.9),
                 area(),
                 origin('center')
@@ -307,8 +342,13 @@ function createScenes(options) {
         let rCoins = 0; // Cantidad de monedas que lleva recolectadas el jugador en el nivel.
         let tCoins = get('coin').length; // Número de monedas que hay en el nivel.
         const coinsLabel = add([
-            text(''),
-            pos(20, 40),
+            sprite('coin', {width: 12}),
+            text('', {
+                transform: {
+                    pos: vec2(16, 2)
+                }
+            }),
+            pos(20, 46),
             scale(2),
             fixed()
         ]);
@@ -382,7 +422,7 @@ function createScenes(options) {
         });
 
         coinsLabel.onUpdate(() => {
-            coinsLabel.text = `Monedas: ${coins} | ${rCoins}/${tCoins}`;
+            coinsLabel.text = `${rCoins}/${tCoins}`;
         });
 
         player.onUpdate(() => {
@@ -439,9 +479,9 @@ function createScenes(options) {
 
         player.onCollide('portal', (p, c) => {
             if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
-                if (levelToPlay === actualLevel) {
-                    coins += rCoins;
-                    ++actualLevel;
+                if (levelToPlay === controller.actualLevel) {
+                    controller.coins += rCoins;
+                    ++controller.actualLevel;
                 }
                 go('level-selection');
             }
@@ -509,6 +549,8 @@ function createScenes(options) {
     });
 
     scene('final', () => {
+        loadUI();
+
         const PLAYER_SPEED = options.PLAYER_MOVE_SPEED/2;
         const HAMMER_SPEED = options.HAMMER_SPEED;
         const HAMMER_ROTATION_SPEED = options.HAMMER_ROTATION_SPEED;
@@ -770,11 +812,11 @@ function createScenes(options) {
         player.onDeath(() => {
             destroy(playerHP);
             addExplode(center(), 12, 120, 30);
-            loop(0.2, () => {
-                shake(10);
-            });
+            // loop(0.2, () => {
+            //     shake(10);
+            // });
             wait(2, () => {
-                go('final');
+                go('main-menu');
             });
         });
 
