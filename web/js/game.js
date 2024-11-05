@@ -141,6 +141,8 @@ function createScenes(options) {
     });
 
     scene('account-menu', () => {
+        const loadElt = document.querySelector('[data-load-account]');
+
         loadUI();
 
         // Background.
@@ -191,7 +193,9 @@ function createScenes(options) {
             color(255, 255, 255),
             area(),
             origin('center')
-        ]);
+        ]).onClick(() => {
+            loadElt.classList.remove('hidden');
+        });
 
         add([
             'button',

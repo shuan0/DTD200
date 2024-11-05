@@ -14,4 +14,4 @@ export function corsMiddleware({acceptedOrigins = ACCEPTED_ORIGINS} = {}) {
             return callback(new Error('Not allowed by CORS'));
         }
     });
-}
+};

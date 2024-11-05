@@ -1,3 +1,6 @@
+document.querySelector('[data-load-account-submit]').addEventListener('click', () => {
+});
+
 function main() {
 	fetch('../options.json')
 		.then(res => {

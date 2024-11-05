@@ -19,8 +19,8 @@
         <div class="screen-container" data-screen-container>
             <canvas class="screen" data-screen></canvas>
         </div>
-		<div class="form-container" data-load-account>
-			<form class="form">
+		<div class="form-container hidden" data-load-account>
+			<form class="form" method="get" action="">
 				<header class="form-header">
 					<h2>Ingrese los datos de su cuenta</h2>
 				</header>
@@ -29,8 +29,13 @@
 						<label for="load-form-username">Nombre de usuario</label>
 						<input class="form-input" id="load-form-username" name="load-form-username" type="text" />
 					</div>
+					<div class="form-input-container">
+						<label for="load-form-password">Contraseña</label>
+						<input class="form-input" id="load-form-password" name="load-form-password" type="password" />
+					</div>
 				</main>
 				<footer class="form-footer">
+					<button class="form-submit-button" type="submit" data-load-account-submit>Cargar datos</button>
 				</footer>
 			</form>
 		</div>
