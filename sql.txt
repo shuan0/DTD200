@@ -6,7 +6,8 @@ USE dtd200;
 CREATE TABLE player (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(16) NOT NULL UNIQUE,
-    password VARCHAR(16) NOT NULL
+    password VARCHAR(16) NOT NULL,
+    coins INT NOT NULL DEFAULT 0
 );
 
 INSERT INTO player (username, password) VALUES

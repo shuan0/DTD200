@@ -116,7 +116,7 @@ function createScenes(options) {
         add([
             'button',
             'playButton',
-            pos(p.x, p.y),
+            pos(p),
             rect(),
             text('JUGAR', {size: 18}),
             color(255, 255, 255),
@@ -132,6 +132,73 @@ function createScenes(options) {
             pos(p.x, p.y+32),
             rect(),
             text('MI CUENTA', {size: 18}),
+            color(255, 255, 255),
+            area(),
+            origin('center')
+        ]).onClick(() => {
+            go('account-menu');
+        });
+    });
+
+    scene('account-menu', () => {
+        loadUI();
+
+        // Background.
+        add([
+            pos(0, 0),
+            sprite('backdrop', {
+                width: width(),
+                height: height()
+            }),
+            color(75, 75, 75),
+            fixed(),
+            z(-999)
+        ]);
+
+        const p = center();
+
+        add([
+            text('CUENTA', {
+                size: 32,
+                transform: (idx, ch) => ({
+                    color: hsl2rgb((time()*0.2+idx*0.1)%1, 0.7, 0.8),
+                    pos: vec2(0, wave(-4, 4, time()*4+idx*0.5)),
+                    scale: wave(1, 1.2, time()*3+idx),
+                    angle: wave(-9, 9, time()*3+idx)
+                })
+            }),
+            pos(p.x, p.y-58),
+            origin('center')
+        ]);
+
+        add([
+            'button',
+            'createAccount',
+            pos(p),
+            rect(),
+            text('Crear cuenta', {size: 18}),
+            color(255, 255, 255),
+            area(),
+            origin('center')
+        ]);
+
+        add([
+            'button',
+            'loadData',
+            pos(p.x, p.y+32),
+            rect(),
+            text('Cargar progreso', {size: 18}),
+            color(255, 255, 255),
+            area(),
+            origin('center')
+        ]);
+
+        add([
+            'button',
+            'saveData',
+            pos(p.x, p.y+64),
+            rect(),
+            text('Guardar progreso', {size: 18}),
             color(255, 255, 255),
             area(),
             origin('center')
