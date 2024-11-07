@@ -5,8 +5,8 @@ const controller = {
 
 function initGame(options) {
     kaboom({
-        root: document.querySelector('[data-screen-container]'),
-        canvas: document.querySelector('[data-screen]'),
+        root: document.getElementById('screen-container'),
+        canvas: document.getElementById('screen'),
         width: 800,
         height: 400,
         scale: 1.5,
@@ -141,7 +141,7 @@ function createScenes(options) {
     });
 
     scene('account-menu', () => {
-        const loadElt = document.querySelector('[data-load-account]');
+        const loadElt = document.getElementById('load-account-container');
 
         loadUI();
 

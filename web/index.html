@@ -16,28 +16,28 @@
 </head>
 <body>
 	<div class="container">
-        <div class="screen-container" data-screen-container>
-            <canvas class="screen" data-screen></canvas>
+        <div id="screen-container" class="screen-container">
+            <canvas id="screen" class="screen"></canvas>
         </div>
-		<div class="form-container hidden" data-load-account>
-			<form class="form" method="get" action="">
+		<div id="load-account-container" class="form-container hidden">
+			<div class="form">
 				<header class="form-header">
 					<h2>Ingrese los datos de su cuenta</h2>
 				</header>
 				<main class="form-main">
 					<div class="form-input-container">
-						<label for="load-form-username">Nombre de usuario</label>
-						<input class="form-input" id="load-form-username" name="load-form-username" type="text" />
+						<label for="load-account-username">Nombre de usuario</label>
+						<input class="form-input" id="load-account-username" name="username" type="text" />
 					</div>
 					<div class="form-input-container">
-						<label for="load-form-password">Contraseña</label>
-						<input class="form-input" id="load-form-password" name="load-form-password" type="password" />
+						<label for="load-account-password">Contraseña</label>
+						<input class="form-input" id="load-account-password" name="password" type="password" />
 					</div>
 				</main>
 				<footer class="form-footer">
-					<button class="form-submit-button" type="submit" data-load-account-submit>Cargar datos</button>
+					<button id="load-account-submit" class="form-submit-button">Cargar datos</button>
 				</footer>
-			</form>
+			</div>
 		</div>
 	</div>
 </body>
