@@ -1,4 +1,7 @@
-const controller = {
+const user = {
+    username: '',
+    password: '',
+    login: false,
     actualLevel: 0,
     coins: 0
 };
@@ -79,7 +82,7 @@ function loadUI() {
         origin('topright')
     ]);
     coinsIndicator.onUpdate(() => {
-        coinsIndicator.text = controller.coins.toString();
+        coinsIndicator.text = user.coins.toString();
     });
 }
 
@@ -242,7 +245,7 @@ function createScenes(options) {
                 py += sep;
             }
             px += sep;
-            let unlocked = i <= controller.actualLevel;
+            let unlocked = i <= user.actualLevel;
             const button = add([
                 'button',
                 pos(px, py),
@@ -259,7 +262,7 @@ function createScenes(options) {
             }
         }
 
-        let bossUnlocked = controller.actualLevel === levels.length;
+        let bossUnlocked = user.actualLevel === levels.length;
         const bossButton = add([
             'button',
             pos(pxi, py+sep),
@@ -407,7 +410,7 @@ function createScenes(options) {
             '$': () => [
                 'coin',
                 sprite('coin'),
-                levelToPlay === controller.actualLevel ? color(255, 255, 255) : color(100, 100, 100),
+                levelToPlay === user.actualLevel ? color(255, 255, 255) : color(100, 100, 100),
                 scale(0.9),
                 area(),
                 origin('center')
@@ -609,9 +612,9 @@ function createScenes(options) {
 
         player.onCollide('portal', (p, c) => {
             if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
-                if (levelToPlay === controller.actualLevel) {
-                    controller.coins += rCoins;
-                    ++controller.actualLevel;
+                if (levelToPlay === user.actualLevel) {
+                    user.coins += rCoins;
+                    ++user.actualLevel;
                 }
                 go('level-selection');
             }

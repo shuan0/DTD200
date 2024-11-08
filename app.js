@@ -1,16 +1,16 @@
 import express from 'express';
-import { corsMiddleware } from './cors.js';
+import { corsMiddleware } from './middlewares/cors.js';
+import { userRouter } from './routes/user.js';
 
 const app = express();
 app.disable('x-powered-by'); // Chau marca de agua.
-app.use(corsMiddleware());
 
+app.use(corsMiddleware());
+app.use('/user', userRouter);
+
+// Query para probar el funcionamiento del backend.
 app.get('/pagani', (req, res) => {
     res.send('Pagani gil');
-});
-
-app.get('/user/load', (req, res) => {
-    res.send(`${req.query['username']} ${req.query['password']}`);
 });
 
 const PORT = process.argv[2] ?? 8000;

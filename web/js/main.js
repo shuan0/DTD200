@@ -1,4 +1,10 @@
 function main() {
+	for (const button of document.querySelectorAll('.form-submit-button-close')) {
+		button.addEventListener('click', () => {
+			button.parentElement.parentElement.parentElement.classList.add('hidden');
+		});
+	}
+
 	document.getElementById('load-account-submit').addEventListener('click', () => {
 		const username = document.getElementById('load-account-username');
 		const password = document.getElementById('load-account-password');
