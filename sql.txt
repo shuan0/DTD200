@@ -10,6 +10,7 @@ CREATE TABLE player (
     coins INT NOT NULL DEFAULT 0
 );
 
-INSERT INTO player (username, password) VALUES
-("tilin", "tilin123"),
-("romancito", "pagani777");
+# Usuarios de prueba.
+INSERT INTO player (username, password, coins) VALUES
+("tilin", "tilin123", 32),
+("romancito", "pagani777", 10);

@@ -1,11 +1,3 @@
-const user = {
-    username: '',
-    password: '',
-    login: false,
-    actualLevel: 0,
-    coins: 0
-};
-
 function initGame(options) {
     kaboom({
         root: document.getElementById('screen-container'),
@@ -192,7 +184,7 @@ function createScenes(options) {
             'loadData',
             pos(p.x, p.y+32),
             rect(),
-            text('Cargar progreso', {size: 18}),
+            text('Iniciar sesion', {size: 18}),
             color(255, 255, 255),
             area(),
             origin('center')
