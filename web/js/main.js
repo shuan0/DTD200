@@ -24,6 +24,7 @@ function main() {
 				user.id = data['id'];
 				user.login = true;
 				user.coins = data['coins'];
+				user.actualLevel = lastLevel;
 			})
 			.catch(error => {
 				console.error('Unable to fetch data:', error);
@@ -42,7 +43,7 @@ function main() {
 		})
 		.catch(error => {
 			alert('¡Error al cargar los datos del juego!');
-			console.error('Unable to fetch data:', error)
+			console.error('Unable to fetch data:', error);
 		});
 
 	/* -- Prueba de base de datos (obtener todos los usuarios cargados) -- */

@@ -168,40 +168,54 @@ function createScenes(options) {
             origin('center')
         ]);
 
-        add([
-            'button',
-            'createAccount',
-            pos(p),
-            rect(),
-            text('Crear cuenta', {size: 18}),
-            color(255, 255, 255),
-            area(),
-            origin('center')
-        ]);
-
-        add([
-            'button',
-            'loadData',
-            pos(p.x, p.y+32),
-            rect(),
-            text('Iniciar sesion', {size: 18}),
-            color(255, 255, 255),
-            area(),
-            origin('center')
-        ]).onClick(() => {
-            loadElt.classList.remove('hidden');
-        });
-
-        add([
-            'button',
-            'saveData',
-            pos(p.x, p.y+64),
-            rect(),
-            text('Guardar progreso', {size: 18}),
-            color(255, 255, 255),
-            area(),
-            origin('center')
-        ]);
+        if (user.login) {
+            add([
+                'button',
+                'saveData',
+                pos(p),
+                rect(),
+                text('Guardar progreso', {size: 18}),
+                color(255, 255, 255),
+                area(),
+                origin('center')
+            ]);
+            add([
+                'button',
+                'signOut',
+                pos(p.x, p.y+32),
+                rect(),
+                text('Cerrar sesion', {size: 18}),
+                color(255, 255, 255),
+                area(),
+                origin('center')
+            ]).onClick(() => {
+                userDefaultValues();
+            });
+        } else {
+            add([
+                'button',
+                'createAccount',
+                pos(p),
+                rect(),
+                text('Crear cuenta', {size: 18}),
+                color(255, 255, 255),
+                area(),
+                origin('center')
+            ]);
+            add([
+                'button',
+                'signIn',
+                pos(p.x, p.y+32),
+                rect(),
+                text('Iniciar sesion', {size: 18}),
+                color(255, 255, 255),
+                area(),
+                origin('center')
+            ]).onClick(() => {
+                go('main-menu');
+                loadElt.classList.remove('hidden');
+            });
+        }
     });
 
     scene('level-selection', () => {

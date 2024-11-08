@@ -1,3 +1,15 @@
+/*
+'*': Jugador
+'=': Bloque de madera
+'?': Bloque con signo de pregunta
+'#': Bloque de oro
+'$': Moneda
+'%': Hongo
+'!': Enemigo con movimiento
+'¡': Enemigo sin movimiento
+'@': Portal
+*/
+
 const levels = [
     [
         '                                                                                                                                                                                                              ',
