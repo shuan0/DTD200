@@ -1,4 +1,4 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
 const dbConfig = {
     host: 'localhost',
@@ -9,3 +9,10 @@ const dbConfig = {
 };
 
 const connection = await mysql.createConnection(dbConfig);
+
+export class UserModel {
+    static async getAll() {
+        const [result] = await connection.query('SELECT * FROM USER');
+        return result;
+    }
+};
