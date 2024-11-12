@@ -252,7 +252,7 @@ function createScenes(options) {
                 py += sep;
             }
             px += sep;
-            let unlocked = i <= user.actualLevel;
+            let unlocked = i <= user.lastLevel;
             const button = add([
                 'button',
                 pos(px, py),
@@ -269,7 +269,7 @@ function createScenes(options) {
             }
         }
 
-        let bossUnlocked = user.actualLevel === levels.length;
+        let bossUnlocked = user.lastLevel === levels.length;
         const bossButton = add([
             'button',
             pos(pxi, py+sep),
@@ -417,7 +417,7 @@ function createScenes(options) {
             '$': () => [
                 'coin',
                 sprite('coin'),
-                levelToPlay === user.actualLevel ? color(255, 255, 255) : color(100, 100, 100),
+                levelToPlay === user.lastLevel ? color(255, 255, 255) : color(100, 100, 100),
                 scale(0.9),
                 area(),
                 origin('center')
@@ -619,9 +619,9 @@ function createScenes(options) {
 
         player.onCollide('portal', (p, c) => {
             if ((c.isLeft() || c.isRight()) && rCoins === tCoins) {
-                if (levelToPlay === user.actualLevel) {
+                if (levelToPlay === user.lastLevel) {
                     user.coins += rCoins;
-                    ++user.actualLevel;
+                    ++user.lastLevel;
                 }
                 go('level-selection');
             }
