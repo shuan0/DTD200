@@ -190,6 +190,7 @@ function createScenes(options) {
                 origin('center')
             ]).onClick(() => {
                 userDefaultValues();
+                go('main-menu');
             });
         } else {
             add([

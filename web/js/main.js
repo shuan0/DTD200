@@ -24,7 +24,7 @@ function main() {
 				user.id = data['id'];
 				user.login = true;
 				user.coins = data['coins'];
-				user.actualLevel = lastLevel;
+				user.actualLevel = data['lastLevel'];
 			})
 			.catch(error => {
 				console.error('Unable to fetch data:', error);
